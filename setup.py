@@ -24,13 +24,16 @@ setup(name='pypot',
           'tools': [],  # Extras require: PyQt4 (not a PyPi packet)
           'doc': ['sphinx', 'sphinx-bootstrap-theme'],
           'http-server': ['bottle', 'tornado'],
-          'zmq-server': ['zmq'],
+          'zmq-server': ['pyzmq'],
           'remote-robot': ['zerorpc'],
           'square-signal': ['scipy'],
           'camera': []  # Extras require: opencv (not a PyPi packet)
       },
 
       entry_points={
+          'console_scripts': [
+              'poppy-motor-reset = pypot.tools.dxl_reset:main'
+          ],
           'gui_scripts': [
               'herborist = pypot.tools.herborist.herborist:main [tools]',
           ],

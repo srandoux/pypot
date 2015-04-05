@@ -63,6 +63,12 @@ class SnapRobotServer(AbstractServer):
             rr.set_motor_register_value(motor, register, float(value))
             return 'Done!'
 
+        @self.app.get('/motor/<motor>/goto/<position>/<duration>')
+        @make_snap_compatible_response
+        def set_goto(motor, position, duration):
+            rr.set_goto_position_for_motor(motor, float(position), float(duration))
+            return 'Done!'
+
         @self.app.get('/snap-blocks.xml')
         @make_snap_compatible_response
         def get_pypot_snap_blocks():
@@ -74,6 +80,13 @@ class SnapRobotServer(AbstractServer):
         @make_snap_compatible_response
         def get_ip():
             return socket.gethostbyname(socket.gethostname())
+
+        @self.app.get('/reset-simulation')
+        @make_snap_compatible_response
+        def reset_simulation():
+            if hasattr(robot, 'reset_simulation'):
+                robot.reset_simulation()
+            return 'Done!'
 
     def run(self):
         bottle.run(self.app,

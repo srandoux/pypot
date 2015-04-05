@@ -124,6 +124,7 @@ dynamixelModels = {
     360: 'MX-12',   # 104 + (1<<8)
     310: 'MX-64',   # 54 + (1<<8)
     320: 'MX-106',  # 64 + (1<<8)
+    350: 'XL-320',  # 94 + (1<<8)
 }
 
 
@@ -153,7 +154,7 @@ dynamixelBaudrates = {
     7: 250000.0,
     9: 200000.0,
     16: 117647.1,
-    34: 57142.9,
+    34: 57600.0,
     103: 19230.8,
     207: 9615.4,
     250: 2250000.0,
@@ -168,7 +169,7 @@ def dxl_to_baudrate(value, model):
 
 def baudrate_to_dxl(value, model):
     for k, v in dynamixelBaudrates.iteritems():
-        if v == value:
+        if (abs(v - value) / float(value)) < 0.05:
             return k
     raise ValueError('incorrect baudrate {} (possible values {})'.format(value, dynamixelBaudrates.values()))
 
@@ -218,6 +219,7 @@ def status_to_dxl(value, model):
 
 # MARK: - Error
 
+# TODO: depend on protocol v1 vs v2
 dynamixelErrors = ['None Error',
                    'Instruction Error',
                    'Overload Error',
